@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>uk.yetanother</groupId>
+	<artifactId>TwoLineElementUtilities</artifactId>
+	<version>0.0.1</version>
+	<packaging>jar</packaging>
+
+	<name>TwoLineElementUtilities</name>
+	<description>Provides an easy way to parse Two Line Element (TLE) files or strings</description>
+	<url>http://www.yetanother.uk</url>
+
+	<licenses>
+	    <license>
+	      <name>Apache License, Version 2.0</name>
+	      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+	      <distribution>repo</distribution>
+	    </license>
+	</licenses>
+	
+	<scm>
+		<url>https://github.com/yetanother-uk/TwoLineElementUtilities.git</url>
+	</scm>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.24.5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

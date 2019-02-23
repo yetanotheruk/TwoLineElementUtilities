@@ -19,6 +19,8 @@ public class TwoLineElementValidatorTest {
     public void checkChecksumValidation() {
         assertEquals("TLE Line expected to be valid", true, TwoLineElementValidator.isLineChecksumValid(tleLine1 + tleLine1Checksum));
         assertEquals("TLE Line expected to be invalid", false, TwoLineElementValidator.isLineChecksumValid(tleLine1 + 0));
+        assertEquals("TLE Line expected to be invalid", false, TwoLineElementValidator.isLineChecksumValid(null));
+        assertEquals("TLE Line expected to be invalid", false, TwoLineElementValidator.isLineChecksumValid(""));
     }
 
     @Test

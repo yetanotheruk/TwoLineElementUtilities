@@ -27,6 +27,11 @@ public final class TwoLineElementValidator {
     }
 
     public static boolean isLineChecksumValid(String line) {
+        // If the line is null or is empty the checksum is invalid.
+        if (line == null || line.isEmpty()) {
+            return false;
+        }
+
         int expectedChecksum = Character.getNumericValue(line.charAt(line.length() - 1));
         return expectedChecksum == TwoLineElementUtilities.generateLineChecksum(line.substring(0, line.length() - 1));
     }
@@ -35,9 +40,11 @@ public final class TwoLineElementValidator {
         String errorMessages = "";
         if (header.length() != TwoLineElementConstants.HEADER_LENGTH) {
             errorMessages += "\nThe header of the TLE Data is not the correct length, expected " + TwoLineElementConstants.HEADER_LENGTH + ".";
-        } else if (lineOne.length() != TwoLineElementConstants.LINE_LENGTH) {
+        }
+        if (lineOne.length() != TwoLineElementConstants.LINE_LENGTH) {
             errorMessages += "\nThe first line of the TLE Data is not the correct length, expected " + TwoLineElementConstants.LINE_LENGTH + ".";
-        } else if (lineTwo.length() != TwoLineElementConstants.LINE_LENGTH) {
+        }
+        if (lineTwo.length() != TwoLineElementConstants.LINE_LENGTH) {
             errorMessages += "\nThe second line of the TLE Data is not the correct length, expected " + TwoLineElementConstants.LINE_LENGTH + ".";
         }
         return errorMessages;

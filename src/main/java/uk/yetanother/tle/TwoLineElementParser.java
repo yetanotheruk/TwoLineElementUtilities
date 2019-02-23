@@ -5,24 +5,39 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import uk.yetanother.tle.exception.InvalidInputFile;
+import uk.yetanother.tle.exception.InvalidInputFileException;
 import uk.yetanother.tle.model.TwoLineElementFile;
 import uk.yetanother.tle.model.TwoLineElementFileImpl;
 
-/*
+/**
+ * TwoLineElementParser - This Parser takes a BufferReader of a TLE file or the
+ * three TLE lines as Strings. In return a TwoLineElementFile class is returned
+ * providing getters for the TLE parameters.
+ * 
  * @author Ashley Baker
+ *
  */
 public final class TwoLineElementParser {
 
+    /** The logger. */
     private static Logger LOGGER = Logger.getLogger(TwoLineElementParser.class.getName());
 
+    /**
+     * Private and unused constructor.
+     */
     private TwoLineElementParser() {
-        // Private and unused constructor.
     }
 
-    public static TwoLineElementFile parseData(BufferedReader inputFile) throws InvalidInputFile {
+    /**
+     * Parses a TLE File provided as a BufferedReader.
+     *
+     * @param inputFile TLE file as a BufferedReader 
+     * @return TwoLineElementFile class providing getters for the TLE parameters
+     * @throws InvalidInputFileException Thrown if there is an IOException while using the BufferedReader.
+     */
+    public static TwoLineElementFile parseData(BufferedReader inputFile) throws InvalidInputFileException {
         if (inputFile == null) {
-            throw new InvalidInputFile("The provided input file was null.");
+            throw new InvalidInputFileException("The provided input file was null.");
         }
 
         try {
@@ -32,14 +47,30 @@ public final class TwoLineElementParser {
             return parseData(header, lineOne, lineTwo);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Unable to read the required lines from the provided input file.", e);
-            throw new InvalidInputFile("Unable to read the required lines from the provided input file.", e);
+            throw new InvalidInputFileException("Unable to read the required lines from the provided input file.", e);
         }
     }
 
+    /**
+     * Parses a TLE File provided as Strings. One for each line of TLE data.
+     *
+     * @param header A String of the TLE Header Line
+     * @param lineOne A String of the first line of TLE data 
+     * @param lineTwo A String of the second line of TLE data 
+     * @return TwoLineElementFile class providing getters for the TLE parameters
+     */
     public static TwoLineElementFile parseData(String header, String lineOne, String lineTwo) {
         return TwoLineElementValidator.isDataValid(header, lineOne, lineTwo) ? createAndPopulateTLE(header, lineOne, lineTwo) : null;
     }
 
+    /**
+     * Creates the and populates the TwoLineElementFile class to be returned.
+     *
+     * @param header A String of the TLE Header Line
+     * @param lineOne A String of the first line of TLE data 
+     * @param lineTwo A String of the second line of TLE data 
+     * @return TwoLineElementFile class providing getters for the TLE parameters
+     */
     private static TwoLineElementFile createAndPopulateTLE(String header, String lineOne, String lineTwo) {
         TwoLineElementFileImpl tleFile = new TwoLineElementFileImpl(header, lineOne, lineTwo);
         parseHeader(header, tleFile);
@@ -48,10 +79,22 @@ public final class TwoLineElementParser {
         return tleFile;
     }
 
+    /**
+     * Parses the header data into the TwoLineElementFile class to be returned.
+     *
+     * @param header A String of the TLE Header Line
+     * @param file TwoLineElementFile to update with parameters from the header data
+     */
     private static void parseHeader(String header, TwoLineElementFileImpl file) {
         file.setSatelliteName(header.trim());
     }
 
+    /**
+     * Parses line one TLE data into the TwoLineElementFile class to be returned.
+     *
+     * @param lineOne A String of line one TLE data
+     * @param file TwoLineElementFile to update with parameters from the line one data
+     */
     private static void parseLineOne(String lineOne, TwoLineElementFileImpl file) {
         file.setSatelliteNumber(Integer.valueOf(lineOne.substring(TwoLineElementConstants.SATELLITE_NUMBER_START, TwoLineElementConstants.SATELLITE_NUMBER_END).trim()));
         file.setSatelliteClassification(lineOne.substring(TwoLineElementConstants.CLASSIFICATION_START, TwoLineElementConstants.CLASSIFICATION_END));
@@ -67,6 +110,12 @@ public final class TwoLineElementParser {
         file.setLineOneChecksum(Integer.valueOf(lineOne.substring(TwoLineElementConstants.CHECKSUM_START, TwoLineElementConstants.CHECKSUM_END).trim()));
     }
 
+    /**
+     * Parses line two TLE data into the TwoLineElementFile class to be returned.
+     *
+     * @param lineTwo A String of line two TLE data
+     * @param file TwoLineElementFile to update with parameters from the line two data
+     */
     private static void parseLineTwo(String lineTwo, TwoLineElementFileImpl file) {
         file.setInclination(Float.valueOf(lineTwo.substring(TwoLineElementConstants.INCLINATION_START, TwoLineElementConstants.INCLINATION_END)));
         file.setRightAscension(Float.valueOf(lineTwo.substring(TwoLineElementConstants.RIGHT_ASCENSION_START, TwoLineElementConstants.RIGHT_ASCENSION_END)));
@@ -78,6 +127,12 @@ public final class TwoLineElementParser {
         file.setLineTwoChecksum(Integer.valueOf(lineTwo.substring(TwoLineElementConstants.CHECKSUM_START, TwoLineElementConstants.CHECKSUM_END)));
     }
 
+    /**
+     * Parses a String that represents a float with exponent.
+     *
+     * @param stringToParse the String that represents a float with exponent
+     * @return the float
+     */
     private static float parseFloatWithExponent(String stringToParse) {
         String valueToParse = "0." + stringToParse.trim();
         valueToParse = valueToParse.replace("-", "E-");

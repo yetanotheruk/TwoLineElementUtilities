@@ -20,6 +20,16 @@
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<id>ashleycbaker</id>
+			<name>Ashley Baker</name>
+			<email>ashley@yetanother.uk</email>
+			<organization>YetAnother</organization>
+			<organizationUrl>https://yetanother.uk</organizationUrl>
+		</developer>
+	</developers>
+
 	<scm>
 		<url>https://github.com/yetanother-uk/TwoLineElementUtilities.git</url>
 	</scm>
@@ -44,6 +54,22 @@
 	</dependencies>
 
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 		<resources>
 			<resource>
 				<directory>${basedir}</directory>

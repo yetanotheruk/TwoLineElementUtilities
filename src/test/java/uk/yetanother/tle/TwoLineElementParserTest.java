@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import uk.yetanother.tle.exception.InvalidInputFile;
+import uk.yetanother.tle.exception.InvalidInputFileException;
 import uk.yetanother.tle.model.TwoLineElementFile;
 
 /*
@@ -29,7 +29,7 @@ public class TwoLineElementParserTest {
 	private static String VALID_LINE_TWO = "2 23802  78.6744 257.3784 6839111 299.9661   9.8350  1.29844754109964";
 	
 	@Test
-	public void parseValidDataFromFile() throws InvalidInputFile {
+	public void parseValidDataFromFile() throws InvalidInputFileException {
 		BufferedReader tleFile = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(VALID_ISS_FILENAME)));
 		TwoLineElementFile tleData = TwoLineElementParser.parseData(tleFile);
 		
@@ -68,20 +68,20 @@ public class TwoLineElementParserTest {
 		assertEquals("Unexpected toString().", expectedHeader,  tleData.toString());
 	}
 	
-	@Test(expected = InvalidInputFile.class)
-	public void parseNullFile() throws InvalidInputFile {
+	@Test(expected = InvalidInputFileException.class)
+	public void parseNullFile() throws InvalidInputFileException {
 		TwoLineElementParser.parseData(null);
 	}
 	
-	@Test(expected = InvalidInputFile.class)
-	public void parseEmptyFile() throws InvalidInputFile, IOException {
+	@Test(expected = InvalidInputFileException.class)
+	public void parseEmptyFile() throws InvalidInputFileException, IOException {
 		BufferedReader mockedReader = mock(BufferedReader.class);
 		when(mockedReader.readLine()).thenThrow(new IOException());
 		TwoLineElementParser.parseData(mockedReader);
 	}
 	
 	@Test()
-	public void testHeaderLengths() throws InvalidInputFile {
+	public void testHeaderLengths() throws InvalidInputFileException {
 		String shortHeader = "Short                  ";
 		String longHeader = "Long                     ";
 		

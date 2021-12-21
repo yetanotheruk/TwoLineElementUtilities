@@ -36,19 +36,21 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>2.24.5</version>
+			<version>4.1.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -69,11 +71,27 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>6.5.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
+							<failOnError>true</failOnError>
+							<skipTestScope>false</skipTestScope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
 				<directory>${basedir}</directory>
-				<targetPath></targetPath>
 				<includes>
 					<include>LICENSE.md</include>
 				</includes>
